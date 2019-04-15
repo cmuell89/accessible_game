@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% block title %}Home{% endblock title %}
+{% block head_css_page %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/breakout.css') }}">
+  <link href="https://fonts.googleapis.com/css?family=Shadows+Into+Light" rel="stylesheet">
+{% endblock head_css_page %}
+{% block jumbotron %}
+  <div class="jumbotron jumbotron-fluid">
+      <div class="container">
+          <h1 class="display-4">Project 3: Accessible Game</h1>
+          <p class="lead">Play breakout using eyetracking / headtracking.</p>
+      </div>
+  </div>
+{% endblock jumbotron %}
+{% block content %}  
+	<div id="breakout">
+    <canvas id="canvas">
+      <div class='unsupported'>
+        Sorry, this example cannot be run because your browser does not support the &lt;canvas&gt; element
+      </div>
+    </canvas>
+    <div id="levels">
+      <img id="next" class="disabled" src="static/images/up.png"   title="next level">
+      <img id="prev" class="disabled" src="static/images/down.png" title="previous level">
+      <span id="label">level:</span><span id="level"></span>
+    </div>
+    <div id="controls">
+      <input id='sound' type='checkbox' />
+      <label for='sound'>sound</label>
+      <input id='accessibility' type='checkbox' />
+      <label for='accessibility'>accessibility</label>
+    </div>
+    <div id="instructions" style='display:none;'>
+      <div class='keyboard'>
+        <b>space</b> to start<br>
+        <b>left/right</b> to move paddle<br>
+        <b>up/down</b> to change level
+      </div>
+      <div class='touch'>
+        <b>touch here</b> to start<br>
+        <b>drag</b> paddle to move<br>
+      </div>
+    </div>
+  </div>   
+{% endblock content %}
+{% block footer_javascript_page %}
+  <script type="text/javascript" src="{{ url_for('static', filename='js/game.js') }}"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='js/breakout.js') }}"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='js/levels.js') }}"></script>
+  <script>
+   Game.ready(function() {
+     var game = Game.start('canvas', Breakout);
+   });
+   </script>
+{% endblock footer_javascript_page %}
