@@ -538,22 +538,16 @@ Game = {
       clearInterval(this.timer);
     },
 
-    initializeWebgazer: function(){
-      webgazer.setGazeListener(function(data, elapsedTime) {
-        if (data == null) {
-            return;
-        }
-        var xprediction = data.x; //these x coordinates are relative to the viewport
-        var yprediction = data.y; //these y coordinates are relative to the viewport
-      }).begin().pause();
-    },
-
     loop: function() {
       this._start  = Game.timestamp(); this.update((this._start - this.lastFrame)/1000.0); // send dt as seconds
       this._middle = Game.timestamp(); this.draw();
       this._end    = Game.timestamp();
       this.updateStats(this._middle - this._start, this._end - this._middle);
       this.lastFrame = this._start;
+    },
+
+    getEyePosition: function(){
+      console.log(this.game.webgazer.getAveragePredicition())
     },
 
     initCanvas: function() {

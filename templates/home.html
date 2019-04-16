@@ -49,8 +49,9 @@
   <script type="text/javascript" src="{{ url_for('static', filename='js/breakout.js') }}"></script>
   <script type="text/javascript" src="{{ url_for('static', filename='js/levels.js') }}"></script>
   <script>
+    var game;
    Game.ready(function() {
-     var game = Game.start('canvas', Breakout);
+     game = Game.start('canvas', Breakout);
    });
    </script>
 {% endblock footer_javascript_page %}

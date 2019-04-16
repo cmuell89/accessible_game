@@ -94,7 +94,7 @@ Breakout = {
     this.paddle  = Object.construct(Breakout.Paddle, this, cfg.paddle);
     this.ball    = Object.construct(Breakout.Ball,   this, cfg.ball);
     this.score   = Object.construct(Breakout.Score,  this, cfg.score);
-    this.webgazer = this.initializeWebgazer();
+    this.webgazer =  Object.construct(Breakout.WebGazer,  this);  
     Game.loadSounds({sounds: cfg.sounds});
   },
 
@@ -115,31 +115,19 @@ Breakout = {
 
   toggleSound: function() {
     this.storage.sound = this.sound = !this.sound;
-    console.log(this.storage.sound)
   },
 
   toggleAccessibility: function() {
     this.accessibility = !this.accessibility;
-    console.log(this.storage.accessibility)
     if (this.accessibility == true){
-      console.log("Webgazer On");
-      this.webgazer.resume()
+      console.log("Beginning WebGazer")
+      this.webgazer.begin();
+      this.webgazer.begin();
     } else {
-      this.webgazer.pause()
-      console.log("Webgazer Off");
+      console.log("Ending WebGazer")
+      this.webgazer.pause();
     }
   },
-
-  initializeWebgazer: function(){
-     this.webgazer = webgazer.setGazeListener(function(data, elapsedTime) {
-        if (data == null) {
-            return;
-        }
-        var xprediction = data.x; //these x coordinates are relative to the viewport
-        var yprediction = data.y; //these y coordinates are relative to the viewport
-    })
-  },
-
 
   update: function(dt) {
     this.court.update(dt);
@@ -717,6 +705,73 @@ Breakout = {
     stopMovingLeft:  function() { this.dleft  = 0; },
     stopMovingRight: function() { this.dright = 0; }
 
+  },
+
+  WebGazer: {
+    initialize: function() {
+      this.running = false;
+      this.webgazer = null;
+      // this.dataWindow = Object.construct(webgazer.util.DataWindow,  this, 10);
+    },
+
+    sleep: function(ms) {
+      return new Promise(resolve => setTimeout(resolve, ms));
+    },
+
+    begin: function() {
+      if (this.running == true || this.webgazer != null) {
+        this.webgazer.resume();
+        this.running = true;
+      } else {
+        this.webgazer = webgazer.setRegression('ridge') /* currently must set regression and tracker */
+                                .setTracker('clmtrackr')
+                                .begin()
+                                .showPredictionPoints(true);
+        this.running = true;
+      }
+    },
+
+    pause: function() {
+      if (this.running == true) {
+        this.webgazer.pause();
+        this.running = false;
+      } else {
+        console.log("Webgazer uninitialized therefore there is nothing to pause.");
+      }
+    },
+
+    end: function() {
+      if (this.running == true){
+        this.webgazer.end();
+        this.running = false;
+      } else {
+        console.log("Webgazer uninitialized therefore there is nothing to pause.");
+      }
+    },
+
+    getPrediction: function() {
+      var prediction = this.webgazer.getCurrentPrediction();
+      if (prediction) {
+         return prediction;
+      }
+    },
+
+    getAveragePrediction: function() {
+      var xdata = [];
+      var ydata = [];
+      console.log(this.running == true);
+      if (this.running == true) {
+        for (i = 0; i < 25; i++) {
+          var prediction = this.webgazer.getCurrentPrediction();
+          xdata.push(prediction.x);
+          ydata.push(prediction.y);
+        }
+        const average = arr => arr.reduce( ( p, c ) => p + c, 0 ) / arr.length;
+        const xavg = average(xdata);
+        const yavg = average(ydata);
+        return {x: xavg, y: yavg}
+      }
+    }
   }
 
   //=============================================================================
