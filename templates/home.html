@@ -44,6 +44,7 @@
   </div>   
 {% endblock content %}
 {% block footer_javascript_page %}
+  <script type="text/javascript" src="{{ url_for('static', filename='js/webgazer.js') }}"></script>
   <script type="text/javascript" src="{{ url_for('static', filename='js/game.js') }}"></script>
   <script type="text/javascript" src="{{ url_for('static', filename='js/breakout.js') }}"></script>
   <script type="text/javascript" src="{{ url_for('static', filename='js/levels.js') }}"></script>

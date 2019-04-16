@@ -517,11 +517,11 @@ Game = {
       this.front.width  = this.width;
       this.front.height = this.height;
       this.front2d      = this.front.getContext('2d');
-      this.addEvents();
       this.resetStats();
       this.resize();
 
       this.game = Object.construct(game, this, this.cfg); // finally construct the game object itself
+      this.addEvents();
 
       if (this.cfg.state)
         StateMachine.create(Object.extend({target: this.game}, this.cfg.state));
@@ -536,6 +536,16 @@ Game = {
 
     stop: function() {
       clearInterval(this.timer);
+    },
+
+    initializeWebgazer: function(){
+      webgazer.setGazeListener(function(data, elapsedTime) {
+        if (data == null) {
+            return;
+        }
+        var xprediction = data.x; //these x coordinates are relative to the viewport
+        var yprediction = data.y; //these y coordinates are relative to the viewport
+      }).begin().pause();
     },
 
     loop: function() {

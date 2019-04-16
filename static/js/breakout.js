@@ -69,12 +69,12 @@ Breakout = {
     ],
 
     sounds: {
-      brick:    '../sound/breakout/brick.mp3',
-      paddle:   '../sound/breakout/paddle.mp3',
-      go:       '../sound/breakout/go.mp3',
-      levelup:  '../sound/breakout/levelup.mp3',
-      loselife: '../sound/breakout/loselife.mp3',
-      gameover: '../sound/breakout/gameover.mp3'
+      brick:    '/static/sound/breakout/brick.mp3',
+      paddle:   '/static/sound/breakout/paddle.mp3',
+      go:       '/static/sound/breakout/go.mp3',
+      levelup:  '/static/sound/breakout/levelup.mp3',
+      loselife: '/static/sound/breakout/loselife.mp3',
+      gameover: '/static/sound/breakout/gameover.mp3'
     }
 
   },
@@ -89,12 +89,12 @@ Breakout = {
     this.storage = runner.storage();
     this.color   = cfg.color;
     this.sound   = (this.storage.sound == "true");
-    this.accessibility = (this.storage.accessibility == "true");
-    console.log(this.accessibility)
+    this.accessibility = false;
     this.court   = Object.construct(Breakout.Court,  this, cfg.court);
     this.paddle  = Object.construct(Breakout.Paddle, this, cfg.paddle);
     this.ball    = Object.construct(Breakout.Ball,   this, cfg.ball);
     this.score   = Object.construct(Breakout.Score,  this, cfg.score);
+    this.webgazer = this.initializeWebgazer();
     Game.loadSounds({sounds: cfg.sounds});
   },
 
@@ -108,8 +108,6 @@ Breakout = {
     Game.addEvent('next',  'click',  this.nextLevel.bind(this, false));
     Game.addEvent('sound', 'change', this.toggleSound.bind(this, false));
     Game.addEvent('accessibility', 'change', this.toggleAccessibility.bind(this, false));
-
-
     Game.addEvent('instructions',     'touchstart', this.play.bind(this));
     Game.addEvent(this.runner.canvas, 'touchmove',  this.ontouchmove.bind(this));
     Game.addEvent(document.body,      'touchmove',  function(event) { event.preventDefault(); }); // prevent ipad bouncing up and down when finger scrolled
@@ -117,12 +115,31 @@ Breakout = {
 
   toggleSound: function() {
     this.storage.sound = this.sound = !this.sound;
+    console.log(this.storage.sound)
   },
 
   toggleAccessibility: function() {
-    this.storage.accessibility = this.accessibility = !this.accessibility;
+    this.accessibility = !this.accessibility;
     console.log(this.storage.accessibility)
+    if (this.accessibility == true){
+      console.log("Webgazer On");
+      this.webgazer.resume()
+    } else {
+      this.webgazer.pause()
+      console.log("Webgazer Off");
+    }
   },
+
+  initializeWebgazer: function(){
+     this.webgazer = webgazer.setGazeListener(function(data, elapsedTime) {
+        if (data == null) {
+            return;
+        }
+        var xprediction = data.x; //these x coordinates are relative to the viewport
+        var yprediction = data.y; //these y coordinates are relative to the viewport
+    })
+  },
+
 
   update: function(dt) {
     this.court.update(dt);
