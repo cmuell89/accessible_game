@@ -158,12 +158,12 @@ Breakout = {
         this.accessibility = !this.accessibility;
         if (this.accessibility == true) {
             // Load the model.
-            this.ball.speed = .2 * this.ball.speed;
+            this.ball.speed = .25 * this.ball.speed;
             toggleVideo();
         } else {
             console.log("Ending Handtracking");
             // Load the model.
-            this.ball.speed = 5 * this.ball.speed;
+            this.ball.speed = 4 * this.ball.speed;
             toggleVideo();
         }
 
