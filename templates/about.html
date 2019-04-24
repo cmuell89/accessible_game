@@ -3,20 +3,42 @@
 {% block jumbotron %}
     <div class="jumbotron jumbotron-fluid">
         <div class="container">
-            <h1 class="display-4">Project 2: Speech UI</h1>
-            <p class="lead">You might be asking, "How do I use this website?"</p>
+            <h1 class="display-4">Project 2: Accessible Game</h1>
+            <p class="lead">You might be asking, "How do I use play the game?"</p>
         </div>
     </div>
 {% endblock jumbotron %}
-{% block content %}  
+{% block content %}
        <div class="containter" id="bigMama">
-        
+
         <div class="row">
             <div class="col-md-4">
                 <div class="card">
                     <div class="card-body">
-                        <h3 class="card-title">Speech UI</h5>
-                        <p class="card-title">You can either type or tap the microphone icon and speak:</p>
+                        <h3 class="card-title">Accessible Game</h3>
+                        <p>You can control the game with the keyboard or voice control / handtracking.</p>
+                        <h5>Keyboard Control:</h5>
+                        <dl>
+                            <li>Start: Space or Eneter</li>
+                            <li>Quit: Esc</li>
+                            <li>Level Up/Down: Up/Down Arrow</li>
+                            <li>Move Paddle: Left/Right Arrow</li>
+                            <li>Sound: Click Sound checkbox</li>
+                            <li>Accessibility: Click Accessibility checkbox</li>
+
+                        </dl>
+                        <h5>Voice/Accessible Control:</h5>
+                        <p>Voice control for basic menu functionality is always available. To activate accessibility mode, say "accessibility"</p>
+                        <p>Accessibility mode will start a webcam hand tracking device. This is aided by a visualization.
+                        <p>Move your hand to the left to move the paddle left, and to the right to move it right.</p>
+                        <p>Moving your hand to the middle of the screen or from the field of view will stop the paddle</p>
+                        <dl>
+                            <li>Start: Say, "launch" or "start"</li>
+                            <li>Quit: Say, "stop" or "quit"</li>
+                            <li>Level Up/Down: Say, "level up" or "level down"</li>
+                            <li>Sound: Say, "sound"</li>
+                            <li>Accessibility: Say, "accessibility"</li>
+                        </dl>
                     </div>
                 </div>
             </div>
